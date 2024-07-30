@@ -7,8 +7,14 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import os
 
 def login_to_website(user_id, password, status_text, df):
+    # Streamlit Cloud 환경에서는 WebDriver를 실행하지 않음
+    if 'STREAMLIT_RUNTIME' in os.environ:
+        status_text.text("Streamlit Cloud 환경에서는 WebDriver를 실행할 수 없습니다.")
+        return False
+
     # Chrome 옵션 설정
     chrome_options = Options()
     chrome_options.add_argument('--disable-gpu')
@@ -60,7 +66,7 @@ def login_to_website(user_id, password, status_text, df):
         for index, row in df.iterrows():
             status_text.text(f"{row['쇼핑몰명']} 자동화 진행 중...")
             result = perform_automation(driver, row, status_text, original_window)
-            st.write(f"{row['쇼핑몰명']}: {'ok' if result else 'ok'}")
+            st.write(f"{row['쇼핑몰명']}: {'성공' if result else '실패'}")
             time.sleep(2)  # 각 작업 사이에 2초 대기
 
             # 작업 완료 후 원래 창으로 돌아가기
@@ -138,7 +144,7 @@ def perform_automation(driver, row, status_text, original_window):
         price_input.send_keys(row['상담톡단가'])
 
         num_input = driver.find_element(By.XPATH, '//input[@id="svc_num5"]')
-        num_input.send_keys(row['상담톡단가'])
+        price_input.send_keys(row['상담톡단가'])
 
         # 기본운영비 입력란에 값 입력
         price_input = driver.find_element(By.XPATH, '//input[@id="rec_basic"]')
