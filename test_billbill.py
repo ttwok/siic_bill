@@ -7,4 +7,5 @@ st.title("Embed a Website in Streamlit")
 url = "https://siic-admin-local.cafe24.com/admin/sic/mbr/mbr_wdr_tab.php"
 
 # 아이프레임 생성
-st.components.v1.iframe(src=url, width=1400, height=800)
+st.components.v1.iframe(src=url, width=700, height=800)
+st.components.v1.iframe(src=url, width=700, height=800)
