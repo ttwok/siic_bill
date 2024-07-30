@@ -14,12 +14,15 @@ def perform_automation(row, status_text):
     desired_cap = {
         'os': 'Windows',
         'os_version': '10',
-        'browser': 'Chrome',
+        'browserName': 'Chrome',
         'browser_version': 'latest',
         'name': 'Streamlit Test'
     }
 
-    driver = webdriver.Remote(command_executor=URL, desired_capabilities=desired_cap)
+    options = webdriver.ChromeOptions()
+    options.set_capability('bstack:options', desired_cap)
+
+    driver = webdriver.Remote(command_executor=URL, options=options)
 
     try:
         driver.get('https://siic-admin-local.cafe24.com/admin/sic/rvn/rvn_bil_tab.php')
