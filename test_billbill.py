@@ -67,3 +67,18 @@ password = st.sidebar.text_input('비밀번호', 'cafe24@002', type='password')
 uploaded_file = st.file_uploader("엑셀 파일을 업로드하세요", type=["xlsx"])
 
 if uploaded_file is not None:
+    df = pd.read_excel(uploaded_file)
+
+    # 아이디와 비밀번호를 데이터프레임에 추가
+    df['아이디'] = user_id
+    df['비밀번호'] = password
+
+    st.write("업로드된 데이터:")
+    st.dataframe(df)
+
+    for index, row in df.iterrows():
+        status_text = st.empty()
+        status_text.text(f"{row['쇼핑몰명']} 자동화 진행 중...")
+        perform_automation(row, status_text)
+else:
+    st.warning("엑셀 파일을 업로드해주세요.")
