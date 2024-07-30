@@ -1,19 +1,9 @@
 import streamlit as st
 import asyncio
-import nest_asyncio
 from pyppeteer import launch
 
-# nest_asyncio 적용
-nest_asyncio.apply()
-
-# pyppeteer 설정 함수
-@st.cache_resource
-async def get_browser():
-    browser = await launch(headless=True, args=['--no-sandbox', '--disable-setuid-sandbox'])
-    return browser
-
 async def get_page_title(url):
-    browser = await get_browser()
+    browser = await launch(headless=True, args=['--no-sandbox', '--disable-setuid-sandbox'])
     page = await browser.newPage()
     await page.goto(url)
     title = await page.title()
@@ -21,7 +11,11 @@ async def get_page_title(url):
     return title
 
 def get_title(url):
-    return asyncio.run(get_page_title(url))
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    title = loop.run_until_complete(get_page_title(url))
+    loop.close()
+    return title
 
 st.title("Streamlit Web Automation Example")
 
