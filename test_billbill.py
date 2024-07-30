@@ -1,6 +1,10 @@
 import streamlit as st
 import asyncio
+import nest_asyncio
 from pyppeteer import launch
+
+# nest_asyncio 적용
+nest_asyncio.apply()
 
 # pyppeteer 설정 함수
 @st.cache_resource
