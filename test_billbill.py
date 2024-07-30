@@ -31,6 +31,6 @@ with st.echo():
         return webdriver.Chrome(service=service, options=options)
 
     driver = get_driver()
-    driver.get("https://siic-admin-local.cafe24.com/admin/sic/usr/usr_adm_loi_0.php?tab_no=0")
+    driver.get("www.naver.com")
 
     st.code(driver.page_source)
