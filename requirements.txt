@@ -11,6 +11,4 @@ httpx
 beautifulsoup4
 Flask
 selenium
-webdriver_manager
-streamlit
 requests
