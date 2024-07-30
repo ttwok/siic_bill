@@ -1,15 +1,21 @@
 import streamlit as st
 import asyncio
 from playwright.async_api import async_playwright
+from playwright._impl._api_types import TimeoutError
 
 async def scrape_google():
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page()
-        await page.goto('https://www.google.com')
-        title = await page.title()
-        await browser.close()
-        return title
+        try:
+            browser = await p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-setuid-sandbox"])
+            page = await browser.new_page()
+            await page.goto('https://www.google.com')
+            title = await page.title()
+            await browser.close()
+            return title
+        except TimeoutError as e:
+            return f"TimeoutError: {str(e)}"
+        except Exception as e:
+            return f"Exception: {str(e)}"
 
 def main():
     st.title('Web Automation with Playwright in Streamlit')
