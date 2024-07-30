@@ -20,8 +20,12 @@ async def get_page_title(url):
     await browser.close()
     return title
 
+def get_title(url):
+    return asyncio.run(get_page_title(url))
+
 st.title("Streamlit Web Automation Example")
 
 if st.button("Connect to Naver"):
-    title = asyncio.run(get_page_title("https://www.naver.com"))
-    st.write(f"Title of the page is: {title}")
+    with st.spinner("Connecting to Naver..."):
+        title = get_title("https://www.naver.com")
+        st.write(f"Title of the page is: {title}")
