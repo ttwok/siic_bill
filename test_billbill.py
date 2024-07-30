@@ -19,16 +19,16 @@ with st.echo():
 
     @st.cache_resource
     def get_driver():
-        return webdriver.Chrome(
-            service=Service(
-                ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-            ),
-            options=options,
-        )
-
-    options = Options()
-    options.add_argument("--disable-gpu")
-    options.add_argument("--headless")
+        options = Options()
+        options.add_argument("--disable-gpu")
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--remote-debugging-port=9222")
+        
+        service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+        
+        return webdriver.Chrome(service=service, options=options)
 
     driver = get_driver()
     driver.get("https://siic-admin-local.cafe24.com/admin/sic/usr/usr_adm_loi_0.php?tab_no=0")
