@@ -18,7 +18,7 @@ driver = get_driver()
 
 st.title("Streamlit Web Automation Example")
 
-url = st.text_input("Enter URL to automate", "https://example.com")
+url = st.text_input("Enter URL to automate", "www.naver.com")
 
 if st.button("Start Automation"):
     driver.get(url)
