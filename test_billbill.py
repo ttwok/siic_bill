@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time
+import os
 
 st.set_page_config(layout="wide")
 st.title("Login and Display Content in Streamlit")
@@ -16,11 +17,18 @@ password = st.sidebar.text_input("Password", type="password")
 login_button = st.sidebar.button("Login")
 
 if login_button:
+    # 필요한 패키지 설치 (Linux 환경일 경우)
+    os.system("apt-get update")
+    os.system("apt-get install -y chromium-driver")
+
     # Selenium을 사용하여 브라우저를 실행하고 로그인합니다
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')  # 브라우저 창을 표시하지 않음
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--remote-debugging-port=9222')
+    options.add_argument('--disable-extensions')
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
