@@ -8,6 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from flask import Flask, request, jsonify
 import threading
 import time
+import requests
 
 # Create Flask app
 app = Flask(__name__)
