@@ -1,10 +1,10 @@
 import streamlit as st
 import asyncio
+import subprocess
 from playwright.async_api import async_playwright
-from playwright.__main__ import main as playwright_install
 
-# 브라우저를 설치합니다
-playwright_install(['install'])
+# playwright 설치
+subprocess.run(["playwright", "install"], check=True)
 
 async def scrape_google():
     async with async_playwright() as p:
