@@ -18,15 +18,11 @@ driver = get_driver()
 
 st.title("Streamlit Web Automation Example")
 
-url = st.text_input("Enter URL to automate", "www.naver.com")
-
-if st.button("Start Automation"):
-    driver.get(url)
+if st.button("Connect to Naver"):
+    driver.get("https://www.naver.com")
     title = driver.title
     st.write(f"Title of the page is: {title}")
 
     # 예시: 특정 엘리먼트를 찾고 작업 수행
     element = driver.find_element(By.TAG_NAME, "h1")
-    st.write(f"H1 tag text is: {element.text}")
-
-    # 추가 작업 수행 가능...
+    st.write(f"H1 tag text is: {element.text}" if element else "No H1 tag found.")
