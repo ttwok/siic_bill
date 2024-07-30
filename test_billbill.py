@@ -14,10 +14,10 @@ def perform_automation(row, status_text):
     desired_cap = {
         'os': 'Windows',
         'os_version': '10',
-        'browserName': 'Chrome',
+        'browser': 'Chrome',
         'browser_version': 'latest',
         'name': 'Streamlit Test',
-        'browserstack.debug': 'true'  # 디버깅 모드 활성화
+        'browserstack.debug': 'true'
     }
 
     driver = webdriver.Remote(
