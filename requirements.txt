@@ -5,3 +5,4 @@ selenium
 openpyxl
 webdriver_manager
 pyppeteer
+nest_asyncio
