@@ -1,6 +1,4 @@
+# requirements.txt
 streamlit
 pandas
-numpy
-matplotlib
-statsmodels
-plotly
+selenium
