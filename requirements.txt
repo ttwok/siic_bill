@@ -1,15 +1,15 @@
 # requirements.txt
 streamlit
-# pandas
-# selenium
-# openpyxl
-# webdriver_manager
-# pyppeteer
-# nest_asyncio
-#  streamlit
-# httpx
-# beautifulsoup4
-# Flask
-# selenium
-# requests
-# webbrowser
+pandas
+selenium
+openpyxl
+webdriver_manager
+pyppeteer
+nest_asyncio
+streamlit
+httpx
+beautifulsoup4
+Flask
+selenium
+requests
+webbrowser
