@@ -4,3 +4,4 @@ pandas
 selenium
 openpyxl
 webdriver_manager
+pyppeteer
