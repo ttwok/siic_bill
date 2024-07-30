@@ -76,9 +76,10 @@ if uploaded_file is not None:
     st.write("업로드된 데이터:")
     st.dataframe(df)
 
-    for index, row in df.iterrows():
-        status_text = st.empty()
-        status_text.text(f"{row['쇼핑몰명']} 자동화 진행 중...")
-        perform_automation(row, status_text)
+    if st.button('자동화 시작'):
+        for index, row in df.iterrows():
+            status_text = st.empty()
+            status_text.text(f"{row['쇼핑몰명']} 자동화 진행 중...")
+            perform_automation(row, status_text)
 else:
     st.warning("엑셀 파일을 업로드해주세요.")
