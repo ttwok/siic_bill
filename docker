@@ -1,0 +1,32 @@
+# 베이스 이미지로 Python 3.9 슬림 버전 사용
+FROM python:3.9-slim
+
+# 작업 디렉토리 설정
+WORKDIR /app
+
+# 필요한 패키지 설치
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+# Chrome 브라우저 및 필요한 패키지 설치
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    xvfb \
+    libxi6 \
+    libgconf-2-4 \
+    && wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+    && dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
+
+# ChromeDriver 설치
+RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
+    wget -q --continue -P /usr/local/bin/ https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip && \
+    unzip /usr/local/bin/chromedriver_linux64.zip -d /usr/local/bin/ && \
+    rm /usr/local/bin/chromedriver_linux64.zip && \
+    chmod +x /usr/local/bin/chromedriver
+
+# 애플리케이션 코드 복사
+COPY . .
+
+# 애플리케이션 실행
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
