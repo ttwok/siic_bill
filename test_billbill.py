@@ -1,30 +1,23 @@
 import streamlit as st
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+import asyncio
+from pyppeteer import launch
 
-# 웹드라이버 설정
+# pyppeteer 설정 함수
 @st.cache_resource
-def get_driver():
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    return driver
+async def get_browser():
+    browser = await launch(headless=True, args=['--no-sandbox', '--disable-setuid-sandbox'])
+    return browser
 
-driver = get_driver()
+async def get_page_title(url):
+    browser = await get_browser()
+    page = await browser.newPage()
+    await page.goto(url)
+    title = await page.title()
+    await browser.close()
+    return title
 
 st.title("Streamlit Web Automation Example")
 
 if st.button("Connect to Naver"):
-    driver.get("https://www.naver.com")
-    title = driver.title
+    title = asyncio.run(get_page_title("https://www.naver.com"))
     st.write(f"Title of the page is: {title}")
-
-    try:
-        element = driver.find_element(By.TAG_NAME, "h1")
-        st.write(f"H1 tag text is: {element.text}")
-    except:
-        st.write("No H1 tag found.")
