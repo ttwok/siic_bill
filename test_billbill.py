@@ -1,14 +1,14 @@
 import streamlit as st
+import httpx
+from bs4 import BeautifulSoup
 import asyncio
-from pyppeteer import launch
 
 async def get_page_title(url):
-    browser = await launch(headless=True, args=['--no-sandbox', '--disable-setuid-sandbox'])
-    page = await browser.newPage()
-    await page.goto(url)
-    title = await page.title()
-    await browser.close()
-    return title
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
+        return soup.title.string if soup.title else 'No title found'
 
 def get_title(url):
     loop = asyncio.new_event_loop()
