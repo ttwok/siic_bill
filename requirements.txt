@@ -1,5 +1,3 @@
 streamlit
-requests
-beautifulsoup4
-playwright
-scrapy
+selenium 
+webdriver-manager
