@@ -1,43 +1,69 @@
-import streamlit as st
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.os_manager import ChromeType
 
-st.title("Automated Login to Cafe24")
+@st.cache_resource
+def get_driver():
+    return webdriver.Chrome(
+        service=Service(
+            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+        ),
+        options=options,
+    )
 
-# 로그인 정보 입력
-user_id = st.text_input("Enter your user ID", "dwcha")
-password = st.text_input("Enter your password", "cafe24@002", type="password")
-login_url = "https://siic-admin-local.cafe24.com/admin/sic/mbr/mbr_wdr_tab.php"
+options = Options()
+options.add_argument("--disable-gpu")
+options.add_argument("--headless")
 
-# 자바스크립트 코드 작성: 로그인 페이지 열고, 폼에 입력 값 설정
-js_code = f"""
-    <script>
-        function openAndLogin() {{
-            var url = "{login_url}";
-            var newWindow = window.open(url, '_blank');
-            newWindow.onload = function() {{
-                setTimeout(function() {{
-                    var userIdInput = newWindow.document.querySelector('input[name="adm_id"]');
-                    var passwordInput = newWindow.document.querySelector('input[name="adm_pw"]');
-                    if (userIdInput && passwordInput) {{
-                        userIdInput.value = "{user_id}";
-                        passwordInput.value = "{password}";
-                        var loginButton = newWindow.document.querySelector('button.btnLogin span');
-                        if (loginButton) {{
-                            loginButton.click();
-                        }} else {{
-                            var form = newWindow.document.querySelector('form');
-                            if (form) {{
-                                form.submit();
-                            }}
-                        }}
-                    }}
-                }}, 1000);
-            }};
-        }}
-        openAndLogin();
-    </script>
-"""
+driver = get_driver()
+driver.get("https://siic-admin-local.cafe24.com/admin/sic/usr/usr_adm_loi_0.php?tab_no=0")
 
-# 버튼 클릭 시 자바스크립트 실행
-if st.button("Login to Cafe24"):
-    st.components.v1.html(js_code, height=0)
-    st.success("Login process initiated. Please check the new tab.")
+st.code(driver.page_source)
+
+<html><head>
+    <title>Example Domain</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+    body {
+        background-color: #f0f0f2;
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    }
+    div {
+        width: 600px;
+        margin: 5em auto;
+        padding: 2em;
+        background-color: #fdfdff;
+        border-radius: 0.5em;
+        box-shadow: 2px 3px 7px 2px rgba(0,0,0,0.02);
+    }
+    a:link, a:visited {
+        color: #38488f;
+        text-decoration: none;
+    }
+    @media (max-width: 700px) {
+        div {
+            margin: 0 auto;
+            width: auto;
+        }
+    }
+    </style>    
+</head>
+
+<body>
+<div>
+    <h1>Example Domain</h1>
+    <p>This domain is for use in illustrative examples in documents. You may use this
+    domain in literature without prior coordination or asking for permission.</p>
+    <p><a href="https://www.iana.org/domains/example">More information...</a></p>
+</div>
+
+
+</body></html>
