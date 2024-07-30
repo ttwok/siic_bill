@@ -1,7 +1,6 @@
 import streamlit as st
 import asyncio
 from playwright.async_api import async_playwright
-from playwright._impl._api_types import TimeoutError
 
 async def scrape_google():
     async with async_playwright() as p:
@@ -12,8 +11,6 @@ async def scrape_google():
             title = await page.title()
             await browser.close()
             return title
-        except TimeoutError as e:
-            return f"TimeoutError: {str(e)}"
         except Exception as e:
             return f"Exception: {str(e)}"
 
