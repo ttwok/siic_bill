@@ -3,7 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
-import os
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import SessionNotCreatedException, WebDriverException
 import time
 
 def main():
@@ -23,11 +24,8 @@ def run_selenium(url):
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     
-    # ChromeDriver 경로 지정 (수동으로 다운로드한 ChromeDriver 경로 설정)
-    chromedriver_path = '/path/to/chromedriver'  # 이 경로를 실제 ChromeDriver 위치로 변경
-    
     try:
-        driver = webdriver.Chrome(service=Service(chromedriver_path), options=options)
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         
         driver.get(url)
         st.write(f"{url}에 접속했습니다.")
@@ -60,6 +58,10 @@ def run_selenium(url):
         driver.switch_to.window(handles[0])
         st.write("첫 번째 창으로 돌아왔습니다.")
         
+    except SessionNotCreatedException as e:
+        st.error("ChromeDriver와 Chrome 브라우저 버전이 호환되지 않습니다. 최신 버전의 ChromeDriver를 사용하세요.")
+    except WebDriverException as e:
+        st.error(f"WebDriver 오류 발생: {e}")
     except Exception as e:
         st.error(f"오류 발생: {e}")
     finally:
