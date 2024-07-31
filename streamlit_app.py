@@ -1,26 +1,33 @@
 import streamlit as st
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
-with st.echo():
-    from selenium import webdriver
-    from selenium.webdriver.chrome.options import Options
-    from selenium.webdriver.chrome.service import Service
-    from webdriver_manager.chrome import ChromeDriverManager
-    from webdriver_manager.core.os_manager import ChromeType
+def main():
+    st.title("Streamlit과 Selenium을 이용한 웹 자동화")
+    
+    url = st.text_input("URL을 입력하세요", "http://example.com")
+    if st.button("실행"):
+        run_selenium(url)
 
-    @st.cache_resource
-    def get_driver():
-        return webdriver.Chrome(
-            service=Service(
-                ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-            ),
-            options=options,
-        )
+def run_selenium(url):
+    # Selenium WebDriver 설정 (ChromeDriver 예시)
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')  # 브라우저를 숨김 모드로 실행
+    driver = webdriver.Chrome(options=options)
+    
+    driver.get(url)
+    st.write(f"{url}에 접속했습니다.")
+    
+    # 페이지에서 특정 요소를 찾고 상호작용하는 예제
+    try:
+        element = driver.find_element_by_name("q")
+        element.send_keys("Streamlit")
+        element.send_keys(Keys.RETURN)
+        st.write("검색을 수행했습니다.")
+    except Exception as e:
+        st.write(f"에러 발생: {e}")
+    
+    driver.quit()
 
-    options = Options()
-    options.add_argument("--disable-gpu")
-    options.add_argument("--headless")
-
-    driver = get_driver()
-    driver.get("https://siic-admin-local.cafe24.com/admin/sic/usr/usr_adm_loi_0.php?tab_no=0")
-
-    st.code(driver.page_source)
+if __name__ == "__main__":
+    main()
