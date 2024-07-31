@@ -23,9 +23,9 @@ def run_selenium(url):
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    
     try:
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        
         driver.get(url)
         st.write(f"{url}에 접속했습니다.")
         
