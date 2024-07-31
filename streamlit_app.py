@@ -2,8 +2,8 @@ import streamlit as st
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.firefox.service import Service
+from webdriver_manager.firefox import GeckoDriverManager
 from selenium.common.exceptions import SessionNotCreatedException, WebDriverException
 import time
 
@@ -18,14 +18,14 @@ def main():
             run_selenium(url)
 
 def run_selenium(url):
-    # Selenium WebDriver 설정 (ChromeDriver 예시)
-    options = webdriver.ChromeOptions()
+    # Selenium WebDriver 설정 (GeckoDriver 예시)
+    options = webdriver.FirefoxOptions()
     options.add_argument('--headless')  # 브라우저를 숨김 모드로 실행
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     
     try:
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
         
         driver.get(url)
         st.write(f"{url}에 접속했습니다.")
@@ -59,7 +59,7 @@ def run_selenium(url):
         st.write("첫 번째 창으로 돌아왔습니다.")
         
     except SessionNotCreatedException as e:
-        st.error("ChromeDriver와 Chrome 브라우저 버전이 호환되지 않습니다. 최신 버전의 ChromeDriver를 사용하세요.")
+        st.error("GeckoDriver와 Firefox 브라우저 버전이 호환되지 않습니다. 최신 버전의 GeckoDriver를 사용하세요.")
     except WebDriverException as e:
         st.error(f"WebDriver 오류 발생: {e}")
     except Exception as e:
