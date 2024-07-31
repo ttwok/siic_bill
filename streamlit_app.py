@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import SessionNotCreatedException, WebDriverException
 import time
 
 def main():
@@ -57,10 +58,17 @@ def run_selenium(url):
         driver.switch_to.window(handles[0])
         st.write("첫 번째 창으로 돌아왔습니다.")
         
+    except SessionNotCreatedException as e:
+        st.error("ChromeDriver와 Chrome 브라우저 버전이 호환되지 않습니다. 최신 버전의 ChromeDriver를 사용하세요.")
+    except WebDriverException as e:
+        st.error(f"WebDriver 오류 발생: {e}")
     except Exception as e:
         st.error(f"오류 발생: {e}")
     finally:
-        driver.quit()
+        try:
+            driver.quit()
+        except UnboundLocalError:
+            st.error("driver 인스턴스가 생성되지 않았습니다.")
 
 if __name__ == "__main__":
     main()
