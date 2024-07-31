@@ -6,15 +6,7 @@ st.title("Embed a Website in Streamlit with Playwright")
 
 def run(playwright):
     browser = playwright.chromium.launch(headless=True, args=['--no-sandbox', '--disable-setuid-sandbox'])
-    context = browser.new_context()
-    page = context.new_page()
-
-    # 콘솔 로그를 캡처
-    page.on("console", lambda msg: print(f"Console log: {msg.text}"))
-    
-    # 네트워크 요청을 캡처
-    page.on("request", lambda request: print(f"Request: {request.url}"))
-
+    page = browser.new_page()
     page.goto('https://siic-admin-local.cafe24.com/admin/sic/rvn/rvn_bil_tab.php')
     page.fill('input[name="username"]', 'your_username')  # 실제 아이디로 변경
     page.fill('input[name="password"]', 'your_password')  # 실제 비밀번호로 변경
