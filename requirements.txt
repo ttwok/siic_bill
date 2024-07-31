@@ -2,4 +2,4 @@ streamlit
 selenium 
 webdriver-manager
 requests
-sync_playwright
+Playwright
