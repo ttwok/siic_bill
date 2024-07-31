@@ -1,13 +1,11 @@
 import streamlit as st
-import requests
 
 st.set_page_config(layout="wide")
 st.title("Embed a Website in Streamlit")
 
-url = "https://siic-admin-local.cafe24.com/admin/sic/mbr/mbr_wdr_tab.php"
+# 특정 사이트의 HTML 코드
+html_content = """
+<iframe src="https://siic-admin-local.cafe24.com/admin/sic/mbr/mbr_wdr_tab.php" width="1400" height="800"></iframe>
+"""
 
-response = requests.get(url)
-if response.status_code == 200:
-    st.components.v1.html(response.text, width=1400, height=800)
-else:
-    st.error("Failed to load the page")
+st.components.v1.html(html_content, width=1400, height=800)
